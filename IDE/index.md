@@ -98,7 +98,7 @@ To build or integrate a server, start from the [MCP documentation](https://curso
 
 ## Use cases (copy-paste patterns)
 
-Broader playbooks: **product/architecture brief → Cursor plan** in [implement-new-feature.md](implement-new-feature.md); **greenfield** (design-first UI + backend stack rules) in [init-new-project.md](init-new-project.md). **Systematic debug** (local, logs, CI): [debug.md](debug.md).
+Broader playbooks: **product/architecture brief → Cursor plan** in [implement-new-feature.md](implement-new-feature.md); **greenfield** (design-first UI + backend stack rules) in [init-new-project.md](init-new-project.md). **Systematic debug** (local, logs, CI): [debug.md](debug.md). **Writing tests** (unit/integration/regression/contract/UI): [write-test-case.md](write-test-case.md).
 
 Each pattern below: **Goal → What to do → Tip.**
 
@@ -124,7 +124,7 @@ Each pattern below: **Goal → What to do → Tip.**
 
 - **Goal:** Lock behavior before refactoring or new features.
 - **What to do:** `@` existing tests or the test folder. “Add failing tests for … then implement until green.”
-- **Tip:** Specify **test framework** and **folder conventions** once in a rule so you do not repeat them.
+- **Tip:** Specify **test framework** and **folder conventions** once in a rule so you do not repeat them. **Full playbook:** [write-test-case.md](write-test-case.md) (TDD, regression, contract, UI tests, prompts).
 
 ### Docs and decisions pass
 

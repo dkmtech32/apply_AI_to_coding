@@ -2,7 +2,7 @@
 
 Dùng **ChatGPT** khi bạn cần **bản kế hoạch mức sản phẩm / kiến trúc** mà chưa cần mở codebase. Dùng **Cursor** khi bạn cần **kế hoạch gắn với file thật**, quy ước dự án và lệnh kiểm thử. Trang này mô tả cách bàn giao rõ ràng giữa hai bước.
 
-Hướng dẫn Cursor chung (rules, MCP, quy trình hằng ngày): xem [index.md](index.md). Thêm **use case khi code** (upgrade, CI, review PR, observability, i18n/a11y, perf…): cùng file [index.md](index.md), mục _Use cases_. Playbook **debug**: [debug.md](debug.md).
+Hướng dẫn Cursor chung (rules, MCP, quy trình hằng ngày): xem [index.md](index.md). Thêm **use case khi code** (upgrade, CI, review PR, observability, i18n/a11y, perf…): cùng file [index.md](index.md), mục _Use cases_. Playbook **debug**: [debug.md](debug.md). **Viết test**: [write-test-case.md](write-test-case.md).
 
 ---
 
@@ -125,7 +125,7 @@ Nếu dùng **Plan mode**, yêu cầu rõ **“một kế hoạch để tôi duy
 
 - [ ] Ngữ cảnh **`@`** bao phủ khu vực thay đổi chính (không phải “cả ổ đĩa”).
 - [ ] Kế hoạch ghi **thư mục/file thật** hoặc nói rõ “bước khám phá trước”.
-- [ ] Lệnh **verify** đúng với repo (`pnpm test`, `pytest`, v.v.).
+- [ ] Lệnh **verify** đúng với repo (`php artisan test`, hoặc `./vendor/bin/phpunit`, v.v.).
 
 ---
 

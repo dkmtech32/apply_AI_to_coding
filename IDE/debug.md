@@ -1,6 +1,6 @@
 # Debug có hệ thống trong Cursor
 
-Playbook cho **lỗi đã có triệu chứng** (local, staging, hoặc production): tái hiện → cô lập nguyên nhân → sửa tối thiểu → chống tái diễn. Khác với [implement-new-feature.md](implement-new-feature.md) (làm tính năng) và [init-new-project.md](init-new-project.md) (dự án mới).
+Playbook cho **lỗi đã có triệu chứng** (local, staging, hoặc production): tái hiện → cô lập nguyên nhân → sửa tối thiểu → chống tái diễn. Khác với [implement-new-feature.md](implement-new-feature.md) (làm tính năng) và [init-new-project.md](init-new-project.md) (dự án mới). Viết test (TDD, hồi quy): [write-test-case.md](write-test-case.md).
 
 Hướng dẫn tổng quan Cursor: [index.md](index.md) (mục *Use cases* có các mẫu ngắn, ví dụ *Fix a bug from a stack trace*).
 
@@ -33,7 +33,7 @@ Hướng dẫn tổng quan Cursor: [index.md](index.md) (mục *Use cases* có c
 
 ### 2. Bó hẹp (tái hiện tối thiểu)
 
-- Một lệnh (`pnpm test path`, `curl`, UI click-path)—viết rõ trong prompt.
+- Một lệnh (`php artisan test tests/Feature/ExampleTest.php`, `curl`, UI click-path)—viết rõ trong prompt.
 - Nếu không reproduce: nhờ Cursor đề xuất **log/instrumentation** tạm (xóa sau khi xong).
 
 ### 3. Phân tích và fix
@@ -81,7 +81,7 @@ Bug report — help me debug in THIS repository.
 3. [STEP]
 
 ## Environment
-- Command(s) run: [e.g. pnpm dev / pytest …]
+- Command(s) run: [e.g. php artisan serve / php artisan test …]
 - Branch / commit: [IF_KNOWN]
 
 ## Artifacts
@@ -111,7 +111,7 @@ Báo lỗi — hỗ trợ debug trong repo NÀY.
 3. [BƯỚC]
 
 ## Môi trường
-- Lệnh đã chạy: [ví dụ pnpm dev / pytest …]
+- Lệnh đã chạy: [ví dụ php artisan serve / php artisan test …]
 - Branch / commit: [NẾU_BIẾT]
 
 ## Đính kèm

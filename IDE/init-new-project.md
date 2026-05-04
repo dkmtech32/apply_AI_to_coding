@@ -2,7 +2,7 @@
 
 Luồng **greenfield** đầy đủ: **dựng UI/UX trước** ngoài Cursor, rồi đưa artifact vào Cursor để code. Với **backend**, **khóa tech stack** bằng **Agent Skills** và/hoặc **project rules** của Cursor, sau đó bám **kế hoạch triển khai** trước khi viết code ồ ạt.
 
-Liên quan: [index.md](index.md) (Cursor cơ bản + **use case khi code**), [implement-new-feature.md](implement-new-feature.md) (brief ChatGPT → kế hoạch Cursor), [debug.md](debug.md) (debug có hệ thống).
+Liên quan: [index.md](index.md) (Cursor cơ bản + **use case khi code**), [implement-new-feature.md](implement-new-feature.md) (brief ChatGPT → kế hoạch Cursor), [debug.md](debug.md) (debug có hệ thống), [write-test-case.md](write-test-case.md) (viết test).
 
 ---
 
