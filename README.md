@@ -262,4 +262,11 @@
 - Task càng mơ hồ, AI càng dễ tự bịa scope.
 - Prompt tốt thường gồm: context + mục tiêu + constraint + file liên quan + expected output.
 - Không dùng AI để che giấu việc mình không hiểu code. Dùng AI để hiểu code nhanh hơn.
-- Mỗi lần AI sửa xong, phải trả lời được: “Nó đổi gì, vì sao, có rủi ro gì?”
+---
+
+### 22. Sử dụng Agent Skills
+
+- **Tự động hóa tiêu chuẩn**: Sử dụng [Agent Skills](./IDE/how-to-use-skill.md) để dạy cho AI agent các quy trình chuyên biệt như deploy, quản lý hạ tầng, hoặc áp dụng kiến trúc phức tạp.
+- **Tính nhất quán**: Đảm bảo AI luôn tuân thủ đúng "Anatomy" và "Workflow" của dự án mà không cần nhắc lại trong prompt.
+- **Mở rộng khả năng**: Sử dụng lệnh `npx skills add` để tích hợp các bộ kỹ năng từ cộng đồng (như Vercel Labs, Laravel Cloud).
+- **Tài liệu chi tiết**: Xem [Hướng dẫn thiết lập Agent Skills](./IDE/how-to-use-skill.md) để biết cách áp dụng cho React, Laravel và Cloudflare.
