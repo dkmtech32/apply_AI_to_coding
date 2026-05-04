@@ -11,7 +11,7 @@ Short onboarding for **workflow**, **Cursor Rules**, **MCP**, and **repeatable u
 1. Install Cursor, sign in, and **open your project folder as the workspace root** (not a parent directory unless you mean to index everything under it).
 2. Wait until **indexing** has settled so `@`/search ground truth matches the files you care about.
 3. **Chat** (or Ask mode): best for questions, exploration, and small clarifications—less autonomous editing.
-4. **Agent**: best when you want multi-step work—reading files, running commands, and applying edits across the tree. Some versions label similar flows **Composer**; same idea: *agentic editing with tools*.
+4. **Agent**: best when you want multi-step work—reading files, running commands, and applying edits across the tree. Some versions label similar flows **Composer**; same idea: _agentic editing with tools_.
 
 ---
 
@@ -46,10 +46,10 @@ Short onboarding for **workflow**, **Cursor Rules**, **MCP**, and **repeatable u
 
 Rules **persist** preferences and project law so you do not repeat the same instructions every chat.
 
-| Kind | Where | Use for |
-|------|--------|--------|
-| **User rules** | Cursor **Settings** (global) | How you like answers, tone, habitual constraints, personal defaults. |
-| **Project rules** | `.cursor/rules/*.mdc` | Stack conventions, architecture, APIs, security, PR style—**team shared**. |
+| Kind              | Where                        | Use for                                                                    |
+| ----------------- | ---------------------------- | -------------------------------------------------------------------------- |
+| **User rules**    | Cursor **Settings** (global) | How you like answers, tone, habitual constraints, personal defaults.       |
+| **Project rules** | `.cursor/rules/*.mdc`        | Stack conventions, architecture, APIs, security, PR style—**team shared**. |
 
 Optional: an **`AGENTS.md`** (or similar) at the repo root can complement rules with **human-oriented** onboarding; rules remain the structured, scoped layer the agent loads reliably.
 
@@ -88,7 +88,7 @@ alwaysApply: false
 
 **When it pays off**
 
-- **Live** data: tickets, customer issues, traces, metrics—ground answers in what is true *now*.
+- **Live** data: tickets, customer issues, traces, metrics—ground answers in what is true _now_.
 - **Verification**: drive a browser to reproduce a bug or confirm a UI fix.
 - **Design handoff**: pull structured context from design tools instead of pasting screenshots alone.
 
@@ -98,7 +98,9 @@ To build or integrate a server, start from the [MCP documentation](https://curso
 
 ## Use cases (copy-paste patterns)
 
-Each pattern: **Goal → What to do → Tip.**
+Broader playbooks: **product/architecture brief → Cursor plan** in [implement-new-feature.md](implement-new-feature.md); **greenfield** (design-first UI + backend stack rules) in [init-new-project.md](init-new-project.md). **Systematic debug** (local, logs, CI): [debug.md](debug.md).
+
+Each pattern below: **Goal → What to do → Tip.**
 
 ### Onboard to an unfamiliar area
 
@@ -136,6 +138,48 @@ Each pattern: **Goal → What to do → Tip.**
 - **What to do:** With a suitable MCP server (e.g. **issues** + **browser**), fetch the ticket acceptance criteria, implement, then **verify** in the app or staging URL.
 - **Tip:** Paste the **exact URL** and test account constraints into the prompt; never put **passwords** in rules.
 
+### Major dependency or framework upgrade
+
+- **Goal:** Move a major version (runtime, framework, or key lib) without silently breaking the app.
+- **What to do:** `@` `package.json` / lockfile / build config / entry docs. Ask for a **phased plan**: breaking changes from upstream, codemods, file-by-file checklist, test gaps, rollback.
+- **Tip:** Ask for **mechanical steps first** (lint/tsconfig/build), then runtime fixes; commit after each phase so diffs stay reviewable.
+
+### CI or build failure from logs
+
+- **Goal:** Turn a red pipeline or local build into a minimal fix.
+- **What to do:** Paste the **full failing log** (or link + excerpt). `@` the workflow file (e.g. `.github/workflows/…`), Dockerfile, or script named in the error.
+- **Tip:** Say whether failure is **reproducible locally** with one command; ask the agent to **reproduce → fix → add guard** (e.g. stricter script or test).
+
+### Pre-merge PR risk review
+
+- **Goal:** Catch security, API, and data risks before merge when you already have a diff.
+- **What to do:** `@` changed files or paste the PR description + key hunks. Ask for **risk list** (authz, injection, PII leaks, migrations, backwards compatibility), not generic praise.
+- **Tip:** Add **“assume attacker on the same network / with a stolen cookie”** for API-facing changes to surface auth and validation gaps.
+
+### Observability pass (logging / metrics / traces)
+
+- **Goal:** Make production failures debuggable without inventing a new logging style per file.
+- **What to do:** `@` existing observability helpers (logger module, OpenTelemetry setup, middleware). “Add structured context to this path: …; match existing patterns only.”
+- **Tip:** Forbid **logging secrets** in rules or in the prompt; ask for **sample log lines** and **redaction** behavior.
+
+### Security and hygiene pass (deps + secrets mindset)
+
+- **Goal:** Reduce obvious foot-guns: leaked secrets patterns, risky deps, unsafe defaults—**without** claiming full pentest coverage.
+- **What to do:** `@` dependency manifests and sensitive areas (auth, uploads, eval). Ask for **prioritized findings** and **small fixes**; run your real scanner/ Dependabot separately.
+- **Tip:** Use **`.cursorignore`** so dumps and `.env` never enter context; describe env **variable names** only, not values.
+
+### Localization (i18n) or accessibility (a11y) sweep
+
+- **Goal:** Align strings and keyboard/ARIA behavior with product and compliance expectations.
+- **What to do:** `@` UI package or routes. “List user-visible strings missing i18n keys” or “Check focus traps, labels, and heading order for these screens.”
+- **Tip:** Pair with **one** reference component that “does it right” via `@` so the agent copies structure, not inventing a second pattern.
+
+### Performance hot path (profile-guided)
+
+- **Goal:** Improve latency or memory where metrics say it hurts—not random micro-optimizations.
+- **What to do:** Paste **numbers** (trace id, slow query, flame graph summary) and `@` the suspected modules. Ask for **measured hypothesis** + change + how to verify.
+- **Tip:** Require **before/after** verification steps (benchmark command, reproduction query)—skip changes that cannot be validated in-repo.
+
 ---
 
 ## Appendix: first-day checklist
@@ -148,4 +192,4 @@ Each pattern: **Goal → What to do → Tip.**
 
 ---
 
-*This page is a local index. Official reference: [cursor.com/docs](https://cursor.com/docs).*
+_This page is a local index. Official reference: [cursor.com/docs](https://cursor.com/docs)._

@@ -2,18 +2,18 @@
 
 Dùng **ChatGPT** khi bạn cần **bản kế hoạch mức sản phẩm / kiến trúc** mà chưa cần mở codebase. Dùng **Cursor** khi bạn cần **kế hoạch gắn với file thật**, quy ước dự án và lệnh kiểm thử. Trang này mô tả cách bàn giao rõ ràng giữa hai bước.
 
-Hướng dẫn Cursor chung (rules, MCP, quy trình hằng ngày): xem [index.md](index.md).
+Hướng dẫn Cursor chung (rules, MCP, quy trình hằng ngày): xem [index.md](index.md). Thêm **use case khi code** (upgrade, CI, review PR, observability, i18n/a11y, perf…): cùng file [index.md](index.md), mục _Use cases_. Playbook **debug**: [debug.md](debug.md).
 
 ---
 
 ## Vì sao chia hai bước
 
-| Giai đoạn | Công cụ phù hợp | Bạn nhận được |
-|-----------|-----------------|---------------|
+| Giai đoạn                        | Công cụ phù hợp         | Bạn nhận được                                                                                  |
+| -------------------------------- | ----------------------- | ---------------------------------------------------------------------------------------------- |
 | **Làm rõ / định hình tính năng** | ChatGPT (hoặc tương tự) | User story, ràng buộc, phương án, rủi ro, mốc triển khai—**không hallucinate đường dẫn file**. |
-| **Kế hoạch triển khai** | Cursor | Các bước theo file, chỗ tái sử dụng, cách kiểm tra / chạy thử—**bám `@` context thật**. |
+| **Kế hoạch triển khai**          | Cursor                  | Các bước theo file, chỗ tái sử dụng, cách kiểm tra / chạy thử—**bám `@` context thật**.        |
 
-ChatGPT **không** thấy cây thư mục của bạn; Cursor thì **có**. Để ChatGPT quyết định *làm gì*; để Cursor quyết định *làm ở đâu* và *làm thế nào* trong **đúng** repo này.
+ChatGPT **không** thấy cây thư mục của bạn; Cursor thì **có**. Để ChatGPT quyết định _làm gì_; để Cursor quyết định _làm ở đâu_ và _làm thế nào_ trong **đúng** repo này.
 
 ---
 
@@ -147,4 +147,4 @@ Cách này giữ tin nhắn đầu trong Cursor ngắn mà vẫn giữ đúng ý
 
 ---
 
-*Tài liệu chính thức Cursor: [cursor.com/docs](https://cursor.com/docs).*
+_Tài liệu chính thức Cursor: [cursor.com/docs](https://cursor.com/docs)._

@@ -2,7 +2,7 @@
 
 Luồng **greenfield** đầy đủ: **dựng UI/UX trước** ngoài Cursor, rồi đưa artifact vào Cursor để code. Với **backend**, **khóa tech stack** bằng **Agent Skills** và/hoặc **project rules** của Cursor, sau đó bám **kế hoạch triển khai** trước khi viết code ồ ạt.
 
-Liên quan: [index.md](index.md) (Cursor cơ bản), [implement-new-feature.md](implement-new-feature.md) (brief ChatGPT → kế hoạch Cursor).
+Liên quan: [index.md](index.md) (Cursor cơ bản + **use case khi code**), [implement-new-feature.md](implement-new-feature.md) (brief ChatGPT → kế hoạch Cursor), [debug.md](debug.md) (debug có hệ thống).
 
 ---
 
@@ -173,4 +173,4 @@ Chuyển sang **Agent**, làm **từng task**, chạy **migration và test** sau
 
 ---
 
-*Stitch MCP có các tool như `list_projects`, `list_screens`, `get_screen`—xem [tài liệu MCP](https://cursor.com/docs/mcp) khi cấu hình hoặc xử lý sự cố.*
+_Stitch MCP có các tool như `list_projects`, `list_screens`, `get_screen`—xem [tài liệu MCP](https://cursor.com/docs/mcp) khi cấu hình hoặc xử lý sự cố._
