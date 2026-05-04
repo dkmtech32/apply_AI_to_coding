@@ -1,176 +1,282 @@
-# Khởi tạo dự án mới: frontend thiết kế trước + backend bám chặt tech stack
+# Khởi tạo dự án mới: ChatGPT chốt plan & thiết kế → Cursor implement
 
-Luồng **greenfield** đầy đủ: **dựng UI/UX trước** ngoài Cursor, rồi đưa artifact vào Cursor để code. Với **backend**, **khóa tech stack** bằng **Agent Skills** và/hoặc **project rules** của Cursor, sau đó bám **kế hoạch triển khai** trước khi viết code ồ ạt.
+Luồng **greenfield** gợi ý: làm **rõ và chốt** trên **ChatGPT** (hoặc công cụ tương đương **không** có quyền xem repo) — **tính năng, cấu trúc project, UI/UX, database** — rồi đưa **gói artifact** vào **Cursor** để code bám repo thật, rules và lệnh verify.
 
-Liên quan: [index.md](index.md) (Cursor cơ bản + **use case khi code**), [implement-new-feature.md](implement-new-feature.md) (brief ChatGPT → kế hoạch Cursor), [debug.md](debug.md) (debug có hệ thống), [write-test-case.md](write-test-case.md) (viết test).
+ChatGPT **không** thấy cây thư mục của bạn; mọi đường dẫn file và convention cuối cùng do **Cursor** đối chiếu khi implement. Tránh để một công cụ vừa “bịa cấu trúc” vừa sửa code — tách giai đoạn cho rõ.
+
+Liên quan: [index.md](index.md), [implement-new-feature.md](implement-new-feature.md) (brief ngoài repo → kế hoạch gắn file), [debug.md](debug.md), [write-test-case.md](write-test-case.md).
 
 ---
 
 ## Khi nào nên dùng luồng này
 
-- Bạn muốn **hướng UI nhìn thấy được** trước khi viết component (ít phải sửa layout lặp lại).
-- Backend cần **stack có chủ đích** (ngôn ngữ, framework, DB, auth, môi trường triển khai)—không phải “model đoán bừa”.
+- Bạn muốn **scope và thiết kế** (feature, folder mental model, màn hình, schema) **ổn định trước** khi Agent sửa hàng loạt file.
+- Team cần **một nguồn brief** (từ ChatGPT) để Cursor chỉ việc **map vào stack** (Laravel, Next, v.v.) và `.cursor/rules` đã ghi.
 
 ---
 
-## Phase 0 — Repo và rào chắn
+## Giai đoạn 1 — ChatGPT: plan, cấu trúc, UI/UX, DB (chưa mở Cursor để code)
 
-1. Tạo thư mục trống và mở làm **workspace root** trong Cursor.
-2. Sớm thêm **`.cursor/rules`** hoặc **Agent Skill** cho những thứ ít đổi:
-   - Package manager, formatter, test runner
-   - **Stack backend** (xem dưới) sau khi đã chốt
-3. Dùng **`.cursorignore`** cho secret và artifact cồng kềnh (export, `node_modules`, dump).
+Làm **lần lượt hoặc lặp** cho đến khi bạn chấp nhận bản chốt. Mỗi lần lưu output vào một chỗ cố định (file `docs/brief-*.md`, Notion, v.v.) để sau này **`@`** trong Cursor.
 
-Tài liệu chính thức: [Cursor Docs](https://cursor.com/docs) · [Rules](https://cursor.com/docs/rules).
+### 1.1 Chốt tính năng và phạm vi
 
----
-
-## Frontend — Stitch hoặc Lovable trước, rồi Cursor
-
-### Phương án A: Google **Stitch**
-
-**Mục tiêu:** Màn hình, luồng, và tư duy design system trước khi code.
-
-**Ngoài Cursor**
-
-1. Trong Stitch, tạo **project** và các screen cho luồng chính (happy path + empty/error nếu được).
-2. Ghi lại **tên screen**, thứ tự luồng, và **design token** (màu, type scale, khoảng cách) mà Stitch cung cấp.
-
-**Trong Cursor**
-
-1. Bật MCP **Stitch** trong Cursor nếu bạn dùng (`stitch` / `user-stitch` trong cài đặt MCP). Xác thực nếu được hỏi.
-2. Mở **Plan mode** (hoặc thread **Chat** mới). Nhờ model **lấy ngữ cảnh màn hình qua MCP** khi implement (ví dụ: list project/screen, rồi `get_screen` cho đúng màn).
-3. **`@`** thư mục app đích (ví dụ `apps/web/` hoặc `frontend/`) và bản nháp **hợp đồng API** để layout khớp dữ liệu thật.
-4. Làm **một lát cắt dọc (vertical slice)**: khung routing → một luồng hoàn chỉnh → component nối stub hoặc API thật.
-
-**Mẹo:** Nếu tắt MCP, export **PNG/SVG** hoặc **spec** từ Stitch rồi **`@`** hoặc dán vào chat; chất lượng giảm nhẹ nhưng vẫn làm được.
-
-### Phương án B: **Lovable**
-
-Hướng dẫn chi tiết + bộ **prompt tiếng Anh** (bootstrap, từng màn, polish, mock API, handoff Cursor): [lovable.md](lovable.md).
-
-**Mục tiêu:** Prototype tương tác nhanh và thường có cấu trúc UI **xuất ra** được.
-
-**Ngoài Cursor**
-
-1. Dựng trang cốt lõi và navigation trong Lovable cho đến khi các bên thống nhất **IA** (information architecture) và **component chính**.
-2. Giữ **bản export** (zip code, đồng bộ repo, hoặc copy từng phần—tuỳ Lovable cho project bạn) và **URL** bản build tham chiếu. Chụp màn các trạng thái quan trọng để so regression.
-
-**Trong Cursor**
-
-1. Ưu tiên **target sạch** trong repo (ví dụ app Vite/Next) thay vì merge mù generated code: coi output Lovable là **bản tham chiếu**.
-2. Dán hoặc import export vào thư mục **`reference/`** hoặc **`_lovable_source/`** (có thể gitignore nếu license lạ), rồi nhờ Cursor **viết lại** theo stack và lint của bạn.
-3. **`@`** thư mục đó + **`@`** ghi chú thiết kế. Yêu cầu: bám layout và UX; refactor theo **thư viện component** và quy ước **routing** của team.
-
-**Mẹo:** Lovable và repo cuối có thể khác về state và API—yêu cầu rõ Cursor **tách “presentation” và “data fetching”** để logic backend không bị nhét trùng trong component.
-
-### Checklist frontend trước khi backend sâu
-
-- [ ] **Bản đồ route** đã thống nhất (tên đồng bộ ngôn ngữ sản phẩm).
-- [ ] **Danh mục component**: shell, list, form, modal, toast.
-- [ ] **Responsive** và kỳ vọng **a11y** (phím, focus, độ tương phản).
-- [ ] **Placeholder dữ liệu**: type giả hoặc nháp OpenAPI để màn không hard-code field bịa.
-
----
-
-## Backend — áp dụng **skill tech stack**, rồi **plan → implement**
-
-Ở đây “skill” = **Agent Skill** (`SKILL.md`) và/hoặc **project rules** **mã hóa stack** để mọi kế hoạch và PR đồng nhất.
-
-### Bước 1 — Làm stack thành văn bản (skill + rules)
-
-**Nếu team đã có skill** (ví dụ “Backend: FastAPI + Postgres + Alembic + Docker”):
-
-- Đảm bảo file nằm đúng chỗ Cursor load skill (theo setup team) và **gọi / tuân thủ** khi mở đầu repo.
-
-**Nếu chưa có**, tạo **project rule** tối thiểu trong `.cursor/rules/` trước (nhanh nhất), ví dụ:
-
-```markdown
----
-description: Stack backend repo này (mặc định bắt buộc)
-globs: "**/*"
-alwaysApply: true
----
-
-- Ngôn ngữ/runtime: …
-- Web framework: …
-- Database: … (+ công cụ migration)
-- Auth/session: …
-- Kiểu API: REST / GraphQL / RPC
-- Cấu hình: biến môi trường kiểu 12-factor; không commit secret
-- Test: …
-```
-
-Sau có thể nâng thành **Agent Skill** tái dùng (`SKILL.md` + frontmatter `name` / `description`); xem mục Agent Skills trong [Cursor Docs](https://cursor.com/docs).
-
-### Bước 2 — Prompt Cursor lấy **kế hoạch triển khai** (chưa code)
-
-Dùng **Plan mode** nếu có. **`@`** thư mục `backend/` (hoặc `server/`) trống và mọi **OpenAPI / ERD / brief sản phẩm**. Dán prompt:
+Yêu cầu ChatGPT **không** đoán đường dẫn repo. Gợi ý prompt (rút gọn từ [implement-new-feature.md](implement-new-feature.md)):
 
 ```text
-Chúng ta đang khởi tạo backend từ đầu. Tuân thủ đúng rule/skill stack backend của project.
+Đóng vai senior PM + engineer. Tôi mô tả sản phẩm / ý tưởng dưới đây.
 
-Hãy trả lại:
-1. Cấu trúc repo (thư mục, module) và lý do
-2. Danh sách dependency (thư viện) — ghi rõ version cố định hoặc chính sách version
-3. Xử lý config & secret (.env.example), logging, dạng lỗi trả về
-4. Tầng dữ liệu: cách đặt schema, migration, chiến lược seed
-5. Ranh giới auth nếu cần (route public vs protected)
-6. Chiến lược test (unit/integration) và lệnh chạy thân thiện CI
-7. Danh sách task triển khai theo thứ tự (slice nhỏ deploy được trước)
-8. Phần "ngoài phạm vi v1"
+Trả lại:
+1. Mục tiêu và phạm vi KHÔNG làm (non-goals)
+2. User stories hoặc acceptance criteria theo từng mốc (MVP trước)
+3. Câu hỏi mở tối đa 5 ý — những gì bạn cần tôi quyết định
+4. Rủi ro (bảo mật, dữ liệu, pháp lý, hiệu năng) và cách giảm thiểu
 
-Chưa viết code ứng dụng cho đến khi tôi duyệt kế hoạch.
+Giả định bạn KHÔNG có quyền truy cập repo. Không ghi đường dẫn file hay tên framework cụ thể trừ khi tôi nêu stack.
 ```
 
 **Bản tiếng Anh:**
 
 ```text
-We are initializing the backend from scratch. Follow the project's backend stack rule / skill exactly.
+Act as a senior PM + engineer. I describe the product / idea below.
 
-Deliver:
-1. Repository layout (folders, modules) and why
-2. Dependency list (libraries) with versions pinned or version policy
-3. Config & secrets handling (.env.example), logging, error shape
-4. Data layer: schema approach, migrations, seed strategy
-5. Auth boundary if required (public vs protected routes)
-6. Testing strategy (unit/integration) and CI-friendly commands
-7. Ordered implementation tasks (smallest deployable slice first)
-8. "Out of scope" for v1
+Return:
+1. Goals and explicit non-goals
+2. User stories or acceptance criteria by milestone (MVP first)
+3. At most 5 open questions — what you need me to decide
+4. Risks (security, data, compliance, performance) and mitigations
 
-Do not write application code until I approve the plan.
+Assume you do NOT have access to my repository. Do not invent file paths or specific framework names unless I state the stack.
 ```
 
-Điều chỉnh các mục nếu bạn dùng **serverless**, **BaaS**, hay **monolith**—khung vẫn giữ nguyên.
+Sau khi trả lời câu hỏi mở, chốt **MVP** vs **sau MVP**.
 
-### Bước 3 — Thực thi sau khi duyệt
+### 1.2 Chốt cấu trúc project và kiến trúc (mức khái niệm)
 
-Chuyển sang **Agent**, làm **từng task**, chạy **migration và test** sau mỗi slice. Giữ type API đồng bộ với **hợp đồng phía frontend** (package type dùng chung hoặc OpenAPI).
+Khi đã biết **stack đích** (ví dụ monolith Laravel + SPA, hay API + web riêng), nhắc stack trong prompt:
+
+```text
+Với stack: [MÔ TẢ NGẮN — ví dụ Laravel API + Inertia + MySQL], hãy đề xuất:
+
+1. Cấu trúc thư mục / bounded context (tên module logic, không cần khớp 100% repo thật)
+2. Ranh giới tầng: HTTP, domain/service, persistence, jobs, notification
+3. Cách tổ chức config, env, feature flag (khái niệm)
+4. Chiến lược test (unit vs feature) ở mức nguyên tắc
+
+Không bịa đường dẫn cụ thể. Ghi rõ giả định nếu thiếu thông tin.
+```
+
+**Bản tiếng Anh:**
+
+```text
+Given target stack: [SHORT DESCRIPTION — e.g. Laravel API + Inertia + MySQL], propose:
+
+1. Folder layout / bounded contexts (logical module names — need not match a real repo exactly)
+2. Layer boundaries: HTTP, domain/service, persistence, jobs, notifications
+3. How to organize config, env, and feature flags (conceptual)
+4. Testing strategy (unit vs integration/feature) at a principles level
+
+Do not invent concrete paths. State assumptions clearly if information is missing.
+```
+
+Output dùng làm **kim chỉ nam**; khi vào Cursor, yêu cầu Agent **đối chiếu với convention repo** và sửa cho khớp.
+
+### 1.3 UI/UX trước khi code
+
+Yêu cầu ChatGPT:
+
+```text
+Dựa trên MVP đã chốt, hãy:
+
+1. Danh sách màn hình / route người dùng (tên + mục đích)
+2. Luồng chính (happy path) dạng bước 1→2→3
+3. Trạng thái cần thiết: loading, empty, error, permission denied
+4. Component / pattern lặp lại (shell, list+filter, form, modal, toast)
+5. Gợi ý a11y: focus, nhãn form, contrast — mức checklist
+```
+
+**Bản tiếng Anh:**
+
+```text
+Based on the agreed MVP:
+
+1. List of screens / user-facing routes (name + purpose)
+2. Primary happy-path flow as numbered steps 1→2→3
+3. Required UI states: loading, empty, error, permission denied
+4. Recurring components / patterns (shell, list+filter, form, modal, toast)
+5. Accessibility checklist: focus, form labels, contrast — keep it practical
+```
+
+**Tuỳ chọn trực quan:** sau khi có bản trên, dùng **Stitch**, **Lovable**, hoặc Figma để có pixel / prototype — xem [lovable.md](../lovable/lovable.md) và phần “Công cụ UI tùy chọn” bên dưới. Cursor vẫn implement theo **repo + rules**, coi export prototype là **tham chiếu**, không merge mù generated code.
+
+### 1.4 Thiết kế database
+
+```text
+Từ MVP và các màn hình đã liệt kê, thiết kế mức ERD / logical schema:
+
+1. Bảng (hoặc aggregate), khóa chính, quan hệ 1-n / n-n
+2. Cột quan trọng và kiểu dữ liệu (không cần SQL chi tiết nếu chưa chốt engine)
+3. Index / ràng buộc unique có ý nghĩa nghiệp vụ
+4. Soft delete, audit trail, multi-tenant (nếu có) — ghi rõ có/không
+5. Migration / seed ở mức ý tưởng (thứ tự phụ thuộc FK)
+
+Không đặt tên cột bịa nếu có chuẩn domain — dùng thuật ngữ tôi đã dùng trong mô tả.
+```
+
+**Bản tiếng Anh:**
+
+```text
+From the MVP and listed screens, design a logical schema / ERD-level model:
+
+1. Tables (or aggregates), primary keys, 1-n / n-n relationships
+2. Important columns and data types (detailed SQL optional if the engine is not fixed)
+3. Indexes / unique constraints that matter for the business rules
+4. Soft deletes, audit trail, multi-tenant (if any) — state yes/no
+5. Migration / seed intent only (dependency order for FKs)
+
+Use domain terms from my description; do not invent column names that contradict the domain language I used.
+```
+
+### Checklist xong giai đoạn ChatGPT
+
+- [ ] MVP và non-goals đã **chốt bằng văn bản**.
+- [ ] Có **danh mục màn hình + luồng** (và prototype tuỳ chọn).
+- [ ] Có **mô tả schema / ERD** đủ để viết migration.
+- [ ] Có **một file hoặc một chỗ** tổng hợp để dán vào Cursor (hoặc commit vào `docs/`).
+
+---
+
+## Giai đoạn 2 — Repo, Cursor rules, artifact
+
+1. Tạo repo (hoặc `laravel new` / starter đã chọn), mở **workspace root** trong Cursor.
+2. Thêm **`.cursor/rules`** (và tuỳ chọn **Agent Skill**) khóa stack thật: framework, DB, formatter, test runner, ranh giới module.
+3. **`.cursorignore`**: secret, `vendor`, `node_modules`, export nặng, dump DB.
+4. Đặt output ChatGPT vào repo (ví dụ `docs/00-brief.md`) hoặc dán trực tiếp vào chat kèm **`@docs/...`**.
+
+Mẫu rule tối thiểu (chỉnh thành stack bạn):
+
+```markdown
+---
+description: Stack repo này (bắt buộc khi implement)
+globs: "**/*"
+alwaysApply: true
+---
+
+- Runtime / framework: …
+- Database + migration tool: …
+- API / frontend (Inertia, SPA, Blade…): …
+- Auth: …
+- Test: … (lệnh chạy)
+- Không commit secret; dùng .env.example
+```
+
+**Rule template (English):**
+
+```markdown
+---
+description: Mandatory stack for this repository
+globs: "**/*"
+alwaysApply: true
+---
+
+- Runtime / framework: …
+- Database + migration tool: …
+- API / frontend (Inertia, SPA, Blade…): …
+- Auth: …
+- Tests: … (how to run)
+- No secrets in git; use .env.example
+```
+
+Tài liệu: [Cursor Docs](https://cursor.com/docs) · [Rules](https://cursor.com/docs/rules).
+
+---
+
+## Giai đoạn 3 — Trong Cursor: kế hoạch gắn file rồi implement
+
+**Không** nhảy vào code hàng loạt trước khi Agent đã **đối chiếu brief với repo**.
+
+### Bước A — Handoff prompt (Plan mode khuyến nghị)
+
+```text
+Dưới đây là brief & thiết kế từ ChatGPT (không có context repo lúc soạn).
+
+Nhiệm vụ:
+1. Đối chiếu với repository hiện tại — chỉnh lại đường dẫn / module cho khớp convention.
+2. Đề xuất thứ tự slice nhỏ (deploy/khả dụng được trước): migration → model → API → UI.
+3. Mỗi slice: file dự kiến, test cần có, lệnh verify local.
+4. Nêu phần "ngoài phạm vi" PR đầu.
+
+Context:
+@docs/00-brief.md (hoặc file bạn đặt)
+@.cursor/rules/…
+
+Chưa sửa code cho đến khi tôi duyệt kế hoạch.
+```
+
+**Bản tiếng Anh:**
+
+```text
+Below is the product brief and design from ChatGPT (no repo access when it was written).
+
+Your tasks:
+1. Reconcile with this repository — adjust paths and modules to match real conventions.
+2. Propose an order of small vertical slices (shippable early): migrations → models → API → UI.
+3. For each slice: likely files, tests to add, and local verify commands.
+4. Call out what is "out of scope" for the first PR.
+
+Context:
+@docs/00-brief.md (or your brief file)
+@.cursor/rules/…
+
+Do not edit application code until I approve the plan.
+```
+
+### Bước B — Thực thi
+
+Chuyển **Agent**, làm **từng slice**: migration + test + API/UI tương ứng. Giữ **hợp đồng API** (OpenAPI hoặc type dùng chung) khớp brief nếu có tách frontend/backend.
+
+---
+
+## Công cụ UI tùy chọn (sau bản ChatGPT)
+
+Khi cần **hình ảnh / click được** trước khi code chi tiết:
+
+### Stitch (MCP trong Cursor khi implement)
+
+- Ngoài Cursor: tạo screen trong [Stitch](https://stitch.google), lưu token & luồng.
+- Trong Cursor: bật MCP Stitch (`user-stitch`), **`@`** export hoặc lấy screen qua MCP khi implement.
+- Mẹo: tắt MCP thì **PNG/SVG + spec** vẫn **`@`** được.
+
+### Lovable
+
+- Chi tiết prompt & handoff: [lovable.md](../lovable/lovable.md).
+- Coi code export là **reference**; viết lại trong repo theo stack và lint.
 
 ---
 
 ## Nối frontend và backend
 
-1. **Contract trước:** **OpenAPI** tối thiểu, **tRPC router**, hoặc **typed client**—một nguồn sự thật để hai phía import hoặc generate.
-2. **Môi trường:** Ghi `API_BASE_URL`, cookie auth/CORS, port dev local trong `README`.
-3. **E2E sau:** Khi một luồng chạy local ổn, thêm smoke E2E (Playwright/Cypress) nếu team cần.
+1. **Contract:** một nguồn sự thật (OpenAPI, DTO PHP/TS dùng chung, v.v.).
+2. **Môi trường:** `README` có cách chạy web, API, test; biến env quan trọng trong `.env.example`.
+3. **E2E:** khi luồng chính ổn định local, cân nhắc smoke E2E (Dusk/Pest/Playwright tuỳ stack).
 
 ---
 
 ## Checklist một trang
 
-**Trước khi code “thật sự”**
+**Trước khi code nhiều trong Cursor**
 
-- [ ] Đã có artifact từ Stitch **hoặc** Lovable (MCP, export, hoặc screenshot + ghi chú).
-- [ ] **Stack backend** đã ghi trong `.cursor/rules` hoặc **Skill**; team đồng ý.
-- [ ] **Plan** backend trong Cursor đã duyệt; frontend đã có phạm vi route/component.
+- [ ] Brief ChatGPT (feature + UI + DB) đã **chốt** và nằm trong repo hoặc sẵn sàng dán.
+- [ ] `.cursor/rules` đã phản **stack thật**.
+- [ ] Kế hoạch **slice** trong Cursor đã duyệt.
 
-**Mốc đủ merge đầu tiên**
+**Mốc merge đầu tiên**
 
-- [ ] Frontend: shell + **một** luồng user đầy đủ với API **mock hoặc thật**.
-- [ ] Backend: **health** + **một** resource + **migration** + **test** happy path.
-- [ ] `README` mô tả cách chạy **web**, **API**, và **test**.
+- [ ] DB: migration cốt lõi + seed tối thiểu (nếu cần).
+- [ ] Backend/API hoặc domain + test happy path.
+- [ ] Frontend: shell + **một** luồng MVP với API mock hoặc thật.
+- [ ] `README` cách chạy và verify.
 
 ---
 
-_Stitch MCP có các tool như `list_projects`, `list_screens`, `get_screen`—xem [tài liệu MCP](https://cursor.com/docs/mcp) khi cấu hình hoặc xử lý sự cố._
+_Stitch MCP: `list_projects`, `list_screens`, `get_screen` — [MCP docs](https://cursor.com/docs/mcp)._
